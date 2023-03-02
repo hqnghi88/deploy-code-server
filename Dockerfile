@@ -56,6 +56,8 @@ RUN apk --no-cache add bash ttf-dejavu libstdc++ libc6-compat \
 
 # Docker env
 WORKDIR /home/coder/gama-platform/headless
+
+# -----------
 # Port
 ENV PORT=8080
 
