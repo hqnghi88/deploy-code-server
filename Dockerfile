@@ -42,7 +42,7 @@ RUN curl -o gama.zip -fSL $(curl -s https://api.github.com/repos/gama-platform/g
 	unzip gama.zip -d /home/coder/gama-platform
 
 # Set absolute path
-RUN sed -i 's/$( dirname "${BASH_SOURCE\[0\]}" )/\/home\/coder/gama-platform\/headless/g' /home/coder/gama-platform/headless/gama-headless.sh
+#RUN sed -i 's/$( dirname "${BASH_SOURCE\[0\]}" )/\/home\/coder/gama-platform\/headless/g' /home/coder/gama-platform/headless/gama-headless.sh
 
 # Make script executable
 RUN chmod +x /home/coder/gama-platform/Gama /home/coder/gama-platform/headless/gama-headless.sh
