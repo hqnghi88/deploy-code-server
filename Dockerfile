@@ -34,28 +34,28 @@ RUN sudo chown -R coder:coder /home/coder/.local
 
 # -----------
 # Create GAMA workspace
-RUN mkdir -p /opt/gama-platform
-RUN cd /opt/gama-platform
+RUN mkdir -p /home/coder/gama-platform
+RUN cd /home/coder/gama-platform
 
 # Install GAMA v1.9.0 w/o JDK
 RUN curl -o gama.zip -fSL $(curl -s https://api.github.com/repos/gama-platform/gama/releases/tags/1.9.0 | grep "1.9.0/GAMA.*Linux.*.zip" | cut -d ':' -f 2,3 | tr -d \") && \
 	unzip gama.zip -d /opt/gama-platform
 
 # Set absolute path
-RUN sed -i 's/$( dirname "${BASH_SOURCE\[0\]}" )/\/opt\/gama-platform\/headless/g' /opt/gama-platform/headless/gama-headless.sh
+RUN sed -i 's/$( dirname "${BASH_SOURCE\[0\]}" )/\/home\/coder/gama-platform\/headless/g' /home/coder/gama-platform/headless/gama-headless.sh
 
 # Make script executable
-RUN chmod +x /opt/gama-platform/Gama /opt/gama-platform/headless/gama-headless.sh
+RUN chmod +x /home/coder/gama-platform/Gama /home/coder/gama-platform/headless/gama-headless.sh
 
 # Release image 
 FROM openjdk:17-jdk-alpine
-COPY --from=0 /opt/gama-platform /opt/gama-platform
+COPY --from=0 /home/coder/gama-platform /home/coder/gama-platform
 
 RUN apk --no-cache add bash ttf-dejavu libstdc++ libc6-compat \
-	&& ln -s /opt/gama-platform/headless/gama-headless.sh /usr/sbin/gama-headless
+	&& ln -s /home/coder/gama-platform/headless/gama-headless.sh /usr/sbin/gama-headless
 
 # Docker env
-WORKDIR /opt/gama-platform/headless
+WORKDIR /home/coder/gama-platform/headless
 # Port
 ENV PORT=8080
 
