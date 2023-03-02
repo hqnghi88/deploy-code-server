@@ -32,12 +32,6 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # Copy files: 
 # COPY deploy-container/myTool /home/coder/myTool
 
-# Port
-ENV PORT=8080
-
-# Use our custom entrypoint script first
-COPY deploy-container/entrypoint.sh /usr/bin/deploy-container-entrypoint.sh
-
 # -----------
 # Create GAMA workspace
 RUN mkdir -p /home/coder/gama-platform
@@ -54,14 +48,20 @@ RUN curl -o gama.zip -fSL $(curl -s https://api.github.com/repos/gama-platform/g
 RUN chmod +x /home/coder/gama-platform/Gama /home/coder/gama-platform/headless/gama-headless.sh
 
 # Release image 
-FROM openjdk:17-jdk-alpine
-COPY --from=0 /home/coder/gama-platform /home/coder/gama-platform
+#FROM openjdk:17-jdk-alpine
+#COPY --from=0 /home/coder/gama-platform /home/coder/gama-platform
 
-RUN apk --no-cache add bash ttf-dejavu libstdc++ libc6-compat \
-	&& ln -s /home/coder/gama-platform/headless/gama-headless.sh /usr/sbin/gama-headless
+#RUN apk --no-cache add bash ttf-dejavu libstdc++ libc6-compat \
+#	&& ln -s /home/coder/gama-platform/headless/gama-headless.sh /usr/sbin/gama-headless
 
 # Docker env
 #WORKDIR /home/coder/gama-platform/headless
 
 # -----------
+# Port
+ENV PORT=8080
+
+# Use our custom entrypoint script first
+COPY deploy-container/entrypoint.sh /usr/bin/deploy-container-entrypoint.sh
+
 ENTRYPOINT ["/usr/bin/deploy-container-entrypoint.sh"]
